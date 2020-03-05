@@ -1,6 +1,5 @@
 package com.example.recyclerview;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,27 +11,26 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerAdaptar extends RecyclerView.Adapter<RecyclerAdaptar.MyViewHolder>{
 
-    /// todo 'logt+tab'
+    // TODO 'logt+tab'
     private static final String TAG = "RecyclerAdaptar";
 
-    private List<String> names = new ArrayList<>();
+    private List<String> names;
 
-    public RecyclerAdaptar(List<String> names) {
+    RecyclerAdaptar(List<String> names) {
         this.names = names;
     }
 
-    int count = 0;
+    private int count = 0;
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        /// todo 'logi+tab'
+        // TODO 'logi+tab'
         Log.i(TAG, "onCreateViewHolder: "+count++);
 
 
@@ -58,7 +56,7 @@ public class RecyclerAdaptar extends RecyclerView.Adapter<RecyclerAdaptar.MyView
         ImageView imageView ;
         TextView textView, textView2;
 
-        public MyViewHolder(@NonNull View itemView) {
+        MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.imageView);
@@ -67,6 +65,20 @@ public class RecyclerAdaptar extends RecyclerView.Adapter<RecyclerAdaptar.MyView
 
             itemView.setOnClickListener(this);
 
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    // TODO Delete from List
+                    names.remove(getAdapterPosition());
+
+                    // TODO Delete from RecyclerView
+                    notifyItemRemoved(getAdapterPosition());
+
+                    return true;
+                }
+            });
+
         }
 
         @Override
@@ -74,5 +86,4 @@ public class RecyclerAdaptar extends RecyclerView.Adapter<RecyclerAdaptar.MyView
             Toast.makeText(v.getContext(),names.get(getAdapterPosition()),Toast.LENGTH_SHORT).show();
         }
     }
-
 }
