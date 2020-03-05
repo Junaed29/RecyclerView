@@ -1,6 +1,7 @@
 package com.example.recyclerview;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -10,7 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerViewClickInterface{
 
     RecyclerView recyclerView;
     RecyclerAdaptar recyclerAdaptar;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         names.add("Shang-Chi and the Legend of the Ten Rings");
         names.add("junaed");
 
-        recyclerAdaptar = new RecyclerAdaptar(names);
+        recyclerAdaptar = new RecyclerAdaptar(names,this);
         recyclerView.setAdapter(recyclerAdaptar);
 
         DividerItemDecoration decoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
@@ -71,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
                 names.add("Junaed_3");
                 names.add("Junaed_4");
 
-                // Adapter notify about the data changed and add ti recycler view
+                // Adapter notify about the data changed and add to recycler view
+                // It also refresh recyclerAdapter
                 recyclerAdaptar.notifyDataSetChanged();
 
                 // it'll stop the refreshing
@@ -83,4 +85,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Method created by RecyclerViewClickInterface
+    @Override
+    public void onItemClick(int position) {
+        Toast.makeText(this,names.get(position),Toast.LENGTH_SHORT).show();
+    }
+
+    // Method created by RecyclerViewClickInterface
+    @Override
+    public void onLongItemClick(int position) {
+        names.remove(position);
+
+        // TODO Refresh RecyclerView
+        recyclerAdaptar.notifyDataSetChanged();
+
+        //              OR
+
+        // TODO Delete from RecyclerView, it's do not refresh RecyclerView
+        //recyclerAdaptar.notifyItemRemoved(position);
+    }
 }

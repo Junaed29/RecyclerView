@@ -20,8 +20,12 @@ public class RecyclerAdaptar extends RecyclerView.Adapter<RecyclerAdaptar.MyView
 
     private List<String> names;
 
-    RecyclerAdaptar(List<String> names) {
+    // Create a object of RecyclerViewClickInterface
+    private RecyclerViewClickInterface recyclerViewClickInterface;
+
+    RecyclerAdaptar(List<String> names, RecyclerViewClickInterface recyclerViewClickInterface) {
         this.names = names;
+        this.recyclerViewClickInterface = recyclerViewClickInterface;
     }
 
     private int count = 0;
@@ -52,7 +56,7 @@ public class RecyclerAdaptar extends RecyclerView.Adapter<RecyclerAdaptar.MyView
         return names.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MyViewHolder extends RecyclerView.ViewHolder  {
         ImageView imageView ;
         TextView textView, textView2;
 
@@ -63,8 +67,29 @@ public class RecyclerAdaptar extends RecyclerView.Adapter<RecyclerAdaptar.MyView
             textView = itemView.findViewById(R.id.textView);
             textView2 = itemView.findViewById(R.id.textView2);
 
-            itemView.setOnClickListener(this);
+            // TODO using interface
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    recyclerViewClickInterface.onItemClick(getAdapterPosition());
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    recyclerViewClickInterface.onLongItemClick(getAdapterPosition());
+                    return true;
+                }
+            });
 
+            /*
+            // TODO without using interface
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(),names.get(getAdapterPosition()),Toast.LENGTH_SHORT).show()
+                }
+            });
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -77,13 +102,9 @@ public class RecyclerAdaptar extends RecyclerView.Adapter<RecyclerAdaptar.MyView
 
                     return true;
                 }
-            });
+            });  */
 
         }
 
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(v.getContext(),names.get(getAdapterPosition()),Toast.LENGTH_SHORT).show();
-        }
     }
 }
