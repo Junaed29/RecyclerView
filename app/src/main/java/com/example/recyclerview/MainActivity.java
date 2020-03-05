@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,16 @@ public class MainActivity extends AppCompatActivity {
     RecyclerAdaptar recyclerAdaptar;
     List<String> names;
 
+
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         recyclerView = findViewById(R.id.recyclerView);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
 
         names = new ArrayList<>();
 
@@ -56,6 +62,22 @@ public class MainActivity extends AppCompatActivity {
 
         DividerItemDecoration decoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(decoration);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                names.add("Junaed_1");
+                names.add("Junaed_2");
+                names.add("Junaed_3");
+                names.add("Junaed_4");
+
+                // Adapter notify about the data changed and add ti recycler view
+                recyclerAdaptar.notifyDataSetChanged();
+
+                // it'll stop the refreshing
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
 
 
