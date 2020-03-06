@@ -28,15 +28,20 @@ dependencies {
 
     // For SwipeRefresh Layout
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // For RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    // For Snackbar
+    // For SnackBar
     implementation 'com.google.android.material:material:1.1.0'
 
     // For Background in RecyclerView to delete or Archived
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.2'
 
+    // Colorful Toast : https://github.com/Muddz/StyleableToast
+    //                  And
+    // https://codinginflow.com/tutorials/android/styleabletoast
+    implementation 'com.muddzdev:styleabletoast:2.2.3'
 }

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.muddzdev.styleabletoast.StyleableToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,9 +77,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         recyclerAdaptar = new RecyclerAdaptar(names,this);
         recyclerView.setAdapter(recyclerAdaptar);
 
+        // TODO Divider into recycler view
         DividerItemDecoration decoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(decoration);
 
+        // For refresher
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -95,6 +98,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        // Add itemTouch to Recycler View to show swipe option
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
@@ -108,7 +113,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
                     for (int i = 0; i < archivedMovieList.size(); i++){
                         allArchivedMovies.append(archivedMovieList.get(i)).append("\n");
                     }
-                    Toast.makeText(MainActivity.this,allArchivedMovies.toString(),Toast.LENGTH_SHORT).show();
+
+                    // TODO Create StyleableToast from https://github.com/Muddz/StyleableToast
+                    StyleableToast.makeText(MainActivity.this,"Archive Movies : \n"+allArchivedMovies.toString(),Toast.LENGTH_LONG,R.style.exampleToast).show();
                 }
             }
         });
@@ -119,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     String archivedMovie = null;
     List<String> archivedMovieList = new ArrayList<>();
 
+    // TODO Create Swipe Properties
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -127,12 +135,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            // Recycler View Row Position
             final int position = viewHolder.getAdapterPosition();
             switch (direction){
                 case ItemTouchHelper.LEFT :
+                    // When swipe Right to Left
                     deletedMovie = names.get(position);
                     names.remove(position);
                     recyclerAdaptar.notifyItemRemoved(position);
+
+                    // To showing 'UNDO' Option
                     Snackbar.make(recyclerView,deletedMovie,Snackbar.LENGTH_LONG)
                             .setAction("Undo", new View.OnClickListener() {
                                 @Override
@@ -144,11 +156,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
                     break;
 
                 case ItemTouchHelper.RIGHT:
+                    // When swipe Left to Right
                     archivedMovie = names.get(position);
                     archivedMovieList.add(archivedMovie);
 
                     names.remove(position);
                     recyclerAdaptar.notifyItemRemoved(position);
+
+                    // To showing 'UNDO' Option
                     Snackbar.make(recyclerView,archivedMovie+", Archived.",Snackbar.LENGTH_LONG)
                             .setAction("Undo", new View.OnClickListener() {
                                 @Override
@@ -164,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         }
 
         // Copy from 'https://github.com/xabaras/RecyclerViewSwipeDecorator'
+        // To Create background Icon and Color when swiping
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
@@ -186,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         Toast.makeText(this,names.get(position),Toast.LENGTH_SHORT).show();
     }
 
-    // Method created by RecyclerViewClickInterface
+    // Method created by RecyclerViewClickInterface Which Created Manually
     @Override
     public void onLongItemClick(int position) {
         Toast.makeText(this,"Long Pressed on \n"+names.get(position),Toast.LENGTH_SHORT).show();

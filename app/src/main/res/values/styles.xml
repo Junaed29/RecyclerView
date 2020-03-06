@@ -9,4 +9,16 @@
     </style>
 
 
+    <!--Style for custom Toast-->
+    <style name="exampleToast">
+        <item name="stColorBackground">#94ffab</item>
+        <item name="stTextColor">#000</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/ic_stars_black_24dp</item>
+        <item name="stIconEnd">@drawable/ic_stars_black_24dp</item>
+        <item name="strokeColor">#4CAF50</item>
+        <item name="strokeWidth">3dp</item>
+        <item name="cornerRadius">3dp</item>
+    </style>
+
 </resources>
