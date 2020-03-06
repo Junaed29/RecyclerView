@@ -21,6 +21,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.muddzdev.styleabletoast.StyleableToast;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
@@ -126,13 +128,25 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     String archivedMovie = null;
     List<String> archivedMovieList = new ArrayList<>();
 
-    // TODO Create Swipe Properties
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+    // TODO Create Swipe and 'Drag and Drop' Properties
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP|ItemTouchHelper.DOWN|ItemTouchHelper.START|ItemTouchHelper.END, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        // TODO Create 'Drag and Drop' Properties
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
+
+            int fromPosition = viewHolder.getAdapterPosition();
+            int toPosition = target.getAdapterPosition();
+
+            // Allow to do 'Drag and Drop'
+            Collections.swap(names,fromPosition,toPosition);
+
+            // Notify to Recycler view to move item to be changed
+            recyclerView.getAdapter().notifyItemMoved(fromPosition,toPosition);
+
+            return true;
         }
 
+        // TODO Create Swipe
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             // Recycler View Row Position

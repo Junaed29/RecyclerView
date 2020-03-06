@@ -5,8 +5,10 @@
     android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
-    android:background="?attr/selectableItemBackground">
+    android:background="@android:color/white"
+    android:foreground="?attr/selectableItemBackground"
+    >
+    <!--'android:foreground="?attr/selectableItemBackground"' is used To create Wave when Selected-->
 
 
     <ImageView
