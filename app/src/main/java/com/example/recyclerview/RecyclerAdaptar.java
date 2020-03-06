@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerAdaptar extends RecyclerView.Adapter<RecyclerAdaptar.MyViewHolder>{
@@ -106,5 +106,15 @@ public class RecyclerAdaptar extends RecyclerView.Adapter<RecyclerAdaptar.MyView
 
         }
 
+    }
+
+    // For searchView
+    public void upDateList(List<String> newNames){
+        //Updated list replace the older
+        names = new ArrayList<>();
+
+        names.addAll(newNames);
+
+        notifyDataSetChanged();
     }
 }

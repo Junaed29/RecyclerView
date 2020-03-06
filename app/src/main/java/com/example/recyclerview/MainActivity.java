@@ -3,6 +3,8 @@ package com.example.recyclerview;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -230,5 +233,40 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
 
         // TODO Delete from RecyclerView, it's do not refresh RecyclerView
         //recyclerAdaptar.notifyItemRemoved(position);
+    }
+
+    // To show searchView in the menu Option
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //Connect menu with menu xml file
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        //Find menu item from menu
+        MenuItem item = menu.findItem(R.id.search_id);
+        //Get Search view with help of action view
+        SearchView searchView = (SearchView) item.getActionView();
+        //Set Listener with SearchView
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //New List for filtered item only
+                List<String> newNames = new ArrayList<>();
+                for(String name : names){
+                    //Get every letter into same order and find the match
+                    if (name.toLowerCase().contains(newText.toLowerCase())){
+                        // Added to the new List
+                        newNames.add(name);
+                    }
+                }
+                // Update View List
+                recyclerAdaptar.upDateList(newNames);
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 }
